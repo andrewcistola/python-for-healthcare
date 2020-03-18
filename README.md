@@ -1,4 +1,4 @@
-![](_fig/labeled.png)
+![](_fig/labeled.jpg)
 
 ## Welcome to Python for Healthcare!
 This is a learning experience designed to teach the basics of using the Python Programming Language for data science in a healthcare setting. You do not need to have any experience with computers to participate and we welcome individuals from any background.
