@@ -6,7 +6,7 @@
 import os # Inlcuded in every script DC!
 
 ### Set WD to Data club folder
-os.chdir("C:/Users/drewc/GitHub/data-for-everyone/data_stories/hospital_spending") # Set wd to project repository
+os.chdir("C:/Users/drewc/GitHub/python-for-healthcare/hospital_spending") # Set wd to project repository
 
 #################### Break ####################
 
