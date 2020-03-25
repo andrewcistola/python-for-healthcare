@@ -1,0 +1,219 @@
+( function( $ ){
+	$( document ).ready( function(){
+
+		// search
+		$( 'input[name=s]' ).parents( 'form' ).on( 'submit', function( e ) {
+			if ( ! $(this).is('.site-search-form') ) {
+				e.preventDefault();
+				window.location = '/search/' + $( this ).find( 'input[name=s]' ).val().replace( / /g, '+' );
+			}
+		} );
+
+		// force wordpress vip link to open in new window
+		$('a.powered-by-wpcom').attr('target','_blank');
+
+		// toggle think tank read more text
+		$('.thinktank .read-more a').click(function () {
+			$(this).html($(this).html() == 'Read More »' ? 'Read Less »' : 'Read More »');
+		});
+
+		if ( 'undefined' !== typeof Clipboard ) {
+			try {
+				new Clipboard( '.copy-btn' );
+			} catch (e) {}
+		}
+
+		$( 'a.share-custom' ).attr( 'data-toggle', 'modal' ).attr( 'data-target', '#republishModal' );
+
+		// Google analytics social interaction function
+		function trackShare( serviceName, href ) {
+			if ( href && serviceName ) {
+				ga( 'send', {
+					hitType: 'social',
+					socialNetwork: serviceName,
+					socialAction: 'share',
+					socialTarget: href.substr( 0, href.indexOf( '?' ) )
+				});
+			}
+		}
+
+		// Google Analytics Social Interactions
+		if ( 'function' === typeof ga ) {
+			// Twitter
+			$( 'a.share-twitter' ).on( 'click', function() { trackShare( 'Twitter', $( this ).attr( 'href' ) ); });
+
+			// Facebook
+			$('a.share-facebook').on( 'click', function() { trackShare( 'Facebook', $( this ).attr( 'href' ) ); });
+
+			// LinkedIn
+			$('a.share-linkedin').on( 'click', function() { trackShare( 'LinkedIn', $( this ).attr( 'href' ) ); });
+		}
+
+		// Toogle longform article sidebars
+		$( '.related-toggle .slab-container' ).addClass( 'hidden-xs' );
+
+		$( '.related-toggle .slab > h3' ).click( function() {
+			$( this ).nextAll( '.slab-container' ).toggleClass( 'hidden-xs' );
+		});
+
+		//Orphan Drug tabs
+		$( '.orphan-drugs-tabs-list a' ).click( function( event ) {
+			event.preventDefault();
+			$( this ).parent().addClass( 'active' );
+			$( this ).parent().siblings().removeClass( 'active' );
+			var tab = $( this ).attr( 'href' );
+			$( '.table-responsive' ).not( tab ).css( 'display', 'none' ).removeClass( 'active' );
+			$( tab ).addClass( 'active' ).fadeIn();
+			$( '.orphan-drugs-info-box' ).fadeOut();
+		});
+
+		$( '.orphan-drugs-name-link' ).click( function( event ) {
+			event.preventDefault();
+			var name = $( this ).text();
+			var nonce = $( '.orphan-drugs-wrapper' ).data( 'nonce' );
+			var ajaxurl = $( '.orphan-drugs-wrapper' ).data( 'ajaxurl' );
+			$.ajax({
+				url: ajaxurl,
+				type: 'POST',
+				data: { 'action': 'orphan_detail', 'nonce': nonce, 'name': name },
+				xhrFields: { withCredentials: true }
+			}).done( function( response ) {
+				var h4 = $( '<h4 />' );
+				h4.addClass( 'orphan-drugs-info-title' ).text( name + ' ' );
+
+				if ( response[0].company ) {
+					var span = $( '<span />' ).text( response[0].company );
+					h4.append( span );
+				}
+
+				$('.orphan-drugs-info-title').replaceWith( h4 );
+
+				if ( response[0].genericname ) {
+					$( '.orphan-drugs-info-subname' ).text( '(' + response[0].genericname + ')' );
+				}
+
+				if ( response[0].initialapprovaldate ) {
+					var year = response[0].initialapprovaldate.split( '/' )[2];
+					if ( response[0].massmarketfirst ) {
+						$( '.orphan-drugs-info-market' ).text( orphan_drugs_strings.approved_for_mass_market + ' ' + year );
+					} else {
+						$( '.orphan-drugs-info-market' ).text( orphan_drugs_strings.approved_as_orphan + ' ' + year );
+					}
+				} else {
+					$( '.orphan-drugs-info-market' ).text( '' );
+				}
+
+				if ( response[0].notes ) {
+					$( '.orphan-drugs-info-notes' ).text( response[0].notes );
+				} else {
+					$( '.orphan-drugs-info-notes' ).text( '' );
+				}
+
+				$( '.orphan-drugs-info-list' ).empty();
+				$.each( response, function( i, item ) {
+					if ( item.marketingapprovaldate && item.exclusivityenddate ) {
+					 	if ( 'N/A' == item.exclusivityenddate ) {
+							var range_span = $( '<span>' + orphan_drugs_strings.approved + ': ' + item.marketingapprovaldate.split( '/' )[2] + '</span>' );
+					 	} else if ( 'TBD' == item.exclusivityenddate ) {
+					 		var range_span = $( '<span>' + orphan_drugs_strings.exclusivity + ': ' + item.marketingapprovaldate.split( '/' )[2] + '-' + orphan_drugs_strings.tbd + '</span>' );
+					 	} else {
+							var range_span = $( '<span>' + orphan_drugs_strings.exclusivity + ': ' + item.marketingapprovaldate.split( '/' )[2] + '-' + item.exclusivityenddate.split( '/' )[2] + '</span>' );
+						}
+						if ( item.approvedindication ) {
+							var li = $( '<li />').text( item.approvedindication );
+						} else {
+							var li = $( '<li />').text( item.designation );
+						}
+						if ( item.massmarketfirst ) {
+							li.append( $( '<span><strong>' + orphan_drugs_strings.orphan_use_approved + ' ' + item.marketingapprovaldate.split( '/' )[2] + '</strong></span>' ) );
+						}
+						li.append( range_span );
+						$( '.orphan-drugs-info-list' ).append( li );
+					}
+				});
+
+				if ( response[0].massmarketfirst && response[0].multipleapprovals ) {
+					$( '.orphan-drugs-info-multiples' ).text( orphan_drugs_strings.mass_market_first );
+				} else {
+					$( '.orphan-drugs-info-multiples' ).text( '' );
+				}
+
+				$( '.orphan-drugs-tabs-list li' ).removeClass( 'active' );
+				if ( response[0].trueorphan ) {
+					$( '.orphan-drugs-tabs-list .true-orphan' ).addClass( 'active' );
+				}
+				if ( response[0].massmarketfirst ) {
+					$( '.orphan-drugs-tabs-list .mass-market' ).addClass( 'active' );
+				}
+				if ( response[0].multipleapprovals ) {
+					$( '.orphan-drugs-tabs-list .multiple-approvals' ).addClass( 'active' );
+				}
+				$( '.orphan-drugs-info-box' ).fadeIn();
+			});
+		});
+
+		$( '.orphan-drugs-info-close' ).click( function( event ) {
+			event.preventDefault();
+			$( '.orphan-drugs-tabs-list li' ).removeClass( 'active' );
+			var active = $( '.orphan-table.active' ).attr( 'id' );
+			$( '.orphan-drugs-tabs-list li a[href="#' + active + '"]' ).parent().addClass( 'active' );
+			$( '.orphan-drugs-info-box' ).fadeOut();
+		});
+
+		$( '.orphan-drugs-search-input input' ).autocomplete({
+			minLength: 2,
+			source: function( request, response ) {
+				var nonce = $( '.orphan-drugs-wrapper' ).data( 'nonce' );
+				var ajaxurl = $( '.orphan-drugs-wrapper' ).data( 'ajaxurl' );
+				$.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					data: { 'action': 'orphan_search', 'nonce': nonce, 'term': request.term },
+					xhrFields: { withCredentials: true }
+				}).done( function( data ) {
+					response( data );
+				});
+			},
+			close: function( event, ui ) {
+				$( '.orphan-drugs-search-input' ).trigger( 'submit' );
+			}
+		});
+
+		$( '.orphan-drugs-search-input' ).submit( function( event ) {
+			event.preventDefault();
+			var drug = $( this ).find( 'input' ).val();
+			if ( drug ) {
+				var el = $( '.orphan-drugs-name-link' ).filter( function() {
+					return ( $( this ).text() == drug );
+				});
+				el.trigger( 'click' );
+			}
+		});
+
+		if ( $( document.body ).is( '.special-article' ) ) {
+			function checkSize(){
+				var pageHeight = $( window ).height();
+				var pageHeightCSS = pageHeight + 'px';
+				var pageWidth = $( window ).innerWidth();
+				var pageWidthCSS = pageWidth + 'px';
+				var articleWidth = 660;
+				var offset = (pageWidth - articleWidth) / 2;
+				var offsetCSS = '-' + offset + 'px';
+
+				// Limit max height of hero container to screen height
+				$('body.special-article .header-full').css( 'max-height', pageHeightCSS );
+
+				if ( $( '.article-body' ).css( 'width' ) == '660px' ) {
+					$( 'body.special-article .layout-lg' ).css( 'width', pageWidthCSS );
+					$( 'body.special-article .layout-lg' ).css( 'margin-left', offsetCSS );
+					$( 'body.special-article .layout-lg' ).css( 'margin-right', offsetCSS );
+				}
+			}
+
+			$(window).resize(checkSize);
+			checkSize();
+		}
+
+
+} );
+} )( jQuery );
