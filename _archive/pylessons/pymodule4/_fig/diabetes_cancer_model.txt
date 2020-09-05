@@ -1,0 +1,24 @@
+                                 OLS Regression Results                                
+=======================================================================================
+Dep. Variable:                 Cancer   R-squared (uncentered):                   1.000
+Model:                            OLS   Adj. R-squared (uncentered):              1.000
+Method:                 Least Squares   F-statistic:                                inf
+Date:                Sat, 11 Apr 2020   Prob (F-statistic):                        0.00
+Time:                        12:43:37   Log-Likelihood:                             inf
+No. Observations:                 500   AIC:                                       -inf
+Df Residuals:                     499   BIC:                                       -inf
+Df Model:                           1                                                  
+Covariance Type:            nonrobust                                                  
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+Cancer         1.0000          0        inf      0.000       1.000       1.000
+==============================================================================
+Omnibus:                     1468.660   Durbin-Watson:                     nan
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              187.500
+Skew:                           0.000   Prob(JB):                     1.93e-41
+Kurtosis:                       0.000   Cond. No.                         1.00
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.

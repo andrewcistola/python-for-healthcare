@@ -1,0 +1,50 @@
+Welcome to Python for Healthcare - An open source learning experience for the Python Programming Language in health data science.
+
+My name is Drew and this is PyStudio Session 1: Self-Compose Your Own Script
+
+We will be discussing factors that increase hospital costs by state. 
+
+Here is the big question: What makes healthcare cost more at come hospitals and not others?
+
+How studio will work
+
+Search Data: CMS hospital compare data
+
+Outcome: MSPB by State
+
+Show and Run Script: Descriptive statistics and ranking
+
+Results: Ranking
+
+Conclusions: Why are some states higher?
+
+Open assignment
+
+How breakoutrooms work
+
+Studio Time
+
+Data: Census Data by State
+
+Show and Run Script: Multiple Linear regression with Physician Income and Percent For Profit
+
+Results: Regression Model
+
+Conlusions: Strong association of for-profit and physician income
+
+Open the discussion
+
+Put answers in chat
+
+1-2 call outs
+
+Survey
+
+
+
+
+
+
+
+
+

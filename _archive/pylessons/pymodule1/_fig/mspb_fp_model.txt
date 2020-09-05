@@ -1,0 +1,27 @@
+                                 OLS Regression Results                                
+=======================================================================================
+Dep. Variable:                   MSPB   R-squared (uncentered):                   0.983
+Model:                            OLS   Adj. R-squared (uncentered):              0.983
+Method:                 Least Squares   F-statistic:                              1415.
+Date:                Wed, 01 Apr 2020   Prob (F-statistic):                    2.13e-43
+Time:                        00:56:32   Log-Likelihood:                          32.983
+No. Observations:                  50   AIC:                                     -61.97
+Df Residuals:                      48   BIC:                                     -58.14
+Df Model:                           2                                                  
+Covariance Type:            nonrobust                                                  
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+MDIncome    4.024e-06   1.42e-07     28.418      0.000    3.74e-06    4.31e-06
+ForProfit      0.4596      0.117      3.935      0.000       0.225       0.694
+==============================================================================
+Omnibus:                        1.122   Durbin-Watson:                   2.634
+Prob(Omnibus):                  0.571   Jarque-Bera (JB):                1.122
+Skew:                           0.243   Prob(JB):                        0.571
+Kurtosis:                       2.451   Cond. No.                     1.39e+06
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.39e+06. This might indicate that there are
+strong multicollinearity or other numerical problems.

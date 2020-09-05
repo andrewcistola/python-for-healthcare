@@ -1,0 +1,38 @@
+fivecities_stage.csv
+
+April 11 2020 Andrew Cistola
+
+Data staged in excel
+
+Renamed TractFIPS to Tract
+
+Renamed health columns as:
+
+AccesCare	
+Arthritis	
+BingeEat	
+BPHigh	
+BPMed	
+Cancer	
+ChildAsthma	
+CHD	
+Checkup	
+CholesterolScreen	
+ColonScreen	
+COPD	
+CorePreventionMen	
+CorePreventionWomen	
+Smoking	
+Dental	
+Diabetes	
+HighCholesterol	
+CKD	
+LPA	
+Mammography	
+MentalHealth	
+Obesity	
+PapTest	
+PersonalHealth	
+Sleep	
+Stroke	
+TeethLost
